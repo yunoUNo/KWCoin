@@ -1,0 +1,3 @@
+[console_scripts]
+stellar-account-prometheus-exporter = stellar_account_prometheus_exporter:run
+

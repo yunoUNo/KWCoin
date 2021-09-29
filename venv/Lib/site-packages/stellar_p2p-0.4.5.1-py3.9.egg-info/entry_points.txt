@@ -1,0 +1,3 @@
+[console_scripts]
+stellar-p2p = stellar.command:main
+

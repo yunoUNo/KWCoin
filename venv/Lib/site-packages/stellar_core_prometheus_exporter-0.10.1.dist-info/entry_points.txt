@@ -1,0 +1,3 @@
+[console_scripts]
+stellar-core-prometheus-exporter = stellar_core_prometheus_exporter:run
+

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>CoWin</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/EX.css') }}">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+
+html {
+  scroll-behavior: smooth;
+}
+
+
+</style>
+<body class="w3-light-grey w3-content" style="max-width:1600px">
+
+<!-- Sidebar/menu -->
+<nav class="w3-sidebar w3-bar-block w3-white w3-animate-left w3-text-grey w3-collapse w3-top w3-center" style="z-index:3;width:300px;font-weight:bold" id="mySidebar"><br>
+  <a href="http://127.0.0.1:5000/" style="text-decoration: none;"><h3 class="w3-padding-64 w3-center"><b>Kw<br>Coin</b></h3></a>
+  <a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-padding w3-hide-large">CLOSE</a>
+  <a href="#" onclick="w3_close()" class="w3-bar-item w3-button">Introdution</a>
+    <a href="#Generation" onclick="w3_close()" class="w3-bar-item w3-button">Generation</a>
+  <a href="#Create" onclick="w3_close()" class="w3-bar-item w3-button">Create Account/<br>Establishment of trust line</a>
+  <a href="#Purchase" onclick="w3_close()" class="w3-bar-item w3-button">Purchase/Sale Coin</a>
+  <a href="#Balance" onclick="w3_close()" class="w3-bar-item w3-button">Balance Check</a>
+
+</nav>
+
+<!-- SMALL-->
+<header class="w3-container w3-top w3-hide-large w3-white w3-xlarge w3-padding-16">
+  <span class="w3-left w3-padding">KwCoin</span>
+  <a href="javascript:void(0)" class="w3-right w3-button w3-white" onclick="w3_open()">☰</a>
+</header>
+
+
+<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+<!-- !PAGE CONTENT! -->
+<div class="w3-main" style="margin-left:300px">
+
+  <!-- Small screens -->
+  <div class="w3-hide-large" style="margin-top:83px"></div>
+
+
+
+
+
+
+  <!-- INTRO -->
+  <div class="w3-container w3-dark-grey w3-center w3-text-light-grey w3-padding-32">
+    <h2><b>Intro</b></h2>
+    <img src="{{ url_for('static', filename='css/image/bit.png') }}"  class="w3-image w3-padding-32" width="600" height="650">
+    <div class="w3-content w3-justify" style="max-width:600px">
+      <h3>KW COIN</h3>
+      <p style="margin-bottom: 100px;">
+광운대 전용 블록체인으로 학생들의 공금 관리를 도와주는 코인 입니다. </br>학생들의 돈을 안전하고 믿을 수 있게 보관하세요!
+      </p>
+      <hr class="w3-opacity">
+      <p id="Generation">
+      <h4>1. 지갑 생성하기</h4>
+공개키와 비밀키를 생성하는 단락 입니다. 본인만의 지갑을 만드세요! </br> 두가지 키를 반드시 기억하고 있어야 합니다.
+      </p>
+
+       <form method = "POST" action="/genkey" class="w3-container" style="margin-bottom: 100px;">
+        <button  class="w3-opacity w3-button  w3-black w3-round-large">Generation</button>
+      <p>
+      <label>Public key</label>
+      <input class="w3-input" type="text"  name = value1 value = {{ value2 }}>
+      </p>
+      <p>
+      <label>Secret key</label>
+      <input class="w3-input" type="text"  name = value2 value = {{ value1 }}>
+      </p>
+    </form>
+
+<!--추가-->
+     <p id="Create">
+    <h4>2. 지갑 등록하기</h4>
+        지갑을 네트워크에 등록하는 단계 입니다. 위에서 생성한 [공개키]를 입력 하세요!
+     </p>
+      <form method = "POST" action="/genregister" class="w3-container" style="margin-bottom: 100px;">
+      <p>
+      <label>Public key</label>
+      <input class="w3-input" type="text" name = "gen_pub" >
+      </p>
+      <button type="submit" class="w3-opacity w3-button  w3-black w3-round-large" onclick="create()">Create</button>
+    </form>
+     <p id="Create">
+    <h4>3. 광운코인 거래 등록하기</h4>
+        내 지갑이 광운코인을 신뢰하고 담을 수 있도록 등록 합니다. 위에서 생성한 [비밀키]를 입력 하세요!
+     </p>
+      <form method="POST" action="/trustline" class="w3-container" style="margin-bottom: 100px;">
+      <p>
+      <label>Secret key</label>
+      <input class="w3-input" type="text" name = "trust_sec">
+      </p>
+      <button type="submit" class="w3-opacity w3-button  w3-black w3-round-large" onclick="Establish()">Establishment</button>
+    </form>
+
+      <hr class="w3-opacity" id="Purchase">
+
+      <h5 class="w3-padding-16">4. 코인을 사고 판매 할 수 있습니다. 구매와 판매를 경험해 보세요!  </h5>
+      <div class="w3-row-padding" style="margin:0 -16px">
+        <div class="w3-half w3-margin-bottom">
+          <form style="margin-bottom: 100px;" method = "POST" action="/Purchase">
+          <ul class="w3-ul w3-white w3-opacity w3-hover-opacity-off">
+            <li class="w3-black w3-xlarge w3-padding-32 w3-center">KWCoin Purchase</li>
+            <li class="w3-padding-16"> <label class="w3-left-align">Fee</label>
+                <input class="w3-input" type="text" name = "pur_Fee" required></li>
+            <li class="w3-padding-16"> <label class="w3-left-align">Public Key</label>
+                <input class="w3-input" type="text" name = "pur_Pub" required></li>
+            <li class="w3-center w3-light-grey w3-padding-24">
+             <button onclick="document.getElementById('Purchasse').style.display='block'" class="w3-button w3-white w3-padding-large">Purchase
+             </button>
+
+            </li>
+          </ul>
+          </form>
+        </div>
+        <div class="w3-half w3-margin-bottom">
+          <form style="margin-bottom: 100px;" method = "POST" action="/Sale">
+          <ul class="w3-ul w3-white w3-opacity w3-hover-opacity-off">
+            <li class="w3-black w3-xlarge w3-padding-32 w3-center">KWCoin Sale</li>
+            <li class="w3-padding-16"> <label class="w3-left-align">KWC</label>
+                <input class="w3-input" type="text" name = "sale_KWC" required></li>
+            <li class="w3-padding-16"> <label class="w3-left-align">Secret Key</label>
+                <input class="w3-input" type="text" name = "sale_Sec" required></li>
+            <li class="w3-center w3-light-grey w3-padding-24">
+              <button onclick="document.getElementById('Purchasse').style.display='block'" class="w3-button w3-white w3-padding-large">Sale
+             </button>
+              </li>
+          </ul>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  <!-- 2 -->
+  <div class="w3-container w3-light-grey w3-padding-32 w3-padding-large" id="Balance">
+    <div class="w3-content" style="max-width:600px">
+      <h4 class="w3-center"><b>5. 잔액 확인하기</b></h4>
+      <p>공개키를 입력하면 지갑에 남아있는 kwc를 확인할 수 있습니다. </p>
+      <form method="POST" action="/balance" >
+        <div class="w3-section">
+          <label>Public key</label>
+          <input class="w3-input w3-border" type="text" name="myPub" >
+        </div>
+         <div class="w3-section">
+          <label>보유한 KWC</label>
+          <input class="w3-input w3-border" type="text" name='myMoney' value = {{ myMoney }} >
+        </div>
+        <button type="submit" class="w3-button w3-block w3-black w3-margin-bottom">Balance check</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="w3-container w3-padding-32 w3-grey">
+    <div class="w3-row-padding">
+      <div class="w3-third">
+        <h3>INFO</h3>
+        <p>Praesent tincidunt sed tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla.</p>
+      </div>
+
+      <div class="w3-third">
+        <h3>Manager</h3>
+        <ul class="w3-ul">
+          <li class="w3-padding w3-hover-black">
+            <span class="w3-large">Yunho Kim</span><br>
+            <span><i class="fa fa-envelope fa-fw w3-hover-text-black" style="margin-right:5px!important"></i>quit5123@naver.com</span>
+          </li>
+          <li class="w3-padding w3-hover-black">
+            <span class="w3-large">Juwon Baek</span><br>
+            <span><i class="fa fa-envelope fa-fw w3-hover-text-black" style="margin-right:5px!important"></i>66767wndnjs@naver.com</span>
+          </li>
+          <li class="w3-padding w3-hover-black">
+            <span class="w3-large">Jaena Jung</span><br>
+            <span><i class="fa fa-envelope fa-fw w3-hover-text-black" style="margin-right:5px!important"></i>jaena0911@naver.com</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="w3-third">
+        <h3>POPULAR COIN</h3>
+        <p>
+          <span class="w3-tag w3-black w3-margin-bottom">Dogi coin</span>
+          <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Bit coin</span>
+          <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Ripple</span>
+          <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Ethereum</span>
+          <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Cardano</span>
+          <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">stellar</span>
+          <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Icon</span>
+          <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Payprotocol</span>
+          <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Mil.k</span>
+          <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Bora</span>
+          <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Dkargo</span>
+          <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Somesing</span>
+          <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Alpha Quark</span>
+          <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">TRX</span>
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <div class="w3-black w3-center w3-padding-24">Powered by CoWin</div>
+
+<!-- End page content -->
+</div>
+
+<!-- 구입폼 -->
+   <div id="Purchasse" class="w3-modal">
+  <div class="w3-modal-content w3-animate-zoom">
+    <div class="w3-container w3-black w3-display-container">
+      <span onclick="document.getElementById('Purchasse').style.display='none'" class="w3-button w3-display-topright w3-large">x</span>
+      <h1>KWCoin Purchase</h1>
+    </div>
+    <div class="w3-content" style="max-width:1500px">
+    <header class="w3-panel w3-center w3-opacity" style="padding:128px 16px">
+    <h1>KW COIN</h1>
+     <h1 letter-spacing: 6pxclass="w3-xlarge">PAYMENT</h1>
+
+     <div class="w3-padding-32">
+       <div class="w3-bar w3-border">
+          <a class="w3-bar-item w3-button">카드</a>
+          <a class="w3-bar-item w3-button w3-light-grey">무통장 입금</a>
+          <a class="w3-bar-item w3-button">일반결제</a>
+          <a class="w3-bar-item w3-button w3-hide-small">핸드폰결제</a>
+        </div>
+      </div>
+    </header>
+      </div>
+    </div>
+    </div>
+<script>
+  function create(){
+    alert("생성완료");
+  }
+   function Establish(){
+    alert("구축완료");
+  }
+</script>
+</body>
+</html>
